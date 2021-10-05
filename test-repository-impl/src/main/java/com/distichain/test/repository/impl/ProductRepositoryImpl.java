@@ -6,9 +6,7 @@ import com.opencsv.CSVWriter;
 import com.opencsv.bean.StatefulBeanToCsv;
 import com.opencsv.bean.StatefulBeanToCsvBuilder;
 
-import java.io.Writer;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.io.FileWriter;
 import java.util.List;
 
 public class ProductRepositoryImpl implements ProductRepository {
@@ -23,14 +21,19 @@ public class ProductRepositoryImpl implements ProductRepository {
     @Override
     public void save(List<ProductBo> products)  {
         try {
-            Writer writer = Files.newBufferedWriter(Paths.get(FILE));
-            StatefulBeanToCsv<Object> beanToCsv = new StatefulBeanToCsvBuilder<>(writer)
+            FileWriter writer = new FileWriter(FILE, true);
+
+            StatefulBeanToCsv<ProductBo> statefulBeanToCsv = new StatefulBeanToCsvBuilder<ProductBo>(writer)
+                    .withSeparator(CSVWriter.DEFAULT_SEPARATOR)
                     .withQuotechar(CSVWriter.NO_QUOTE_CHARACTER)
+                    .withEscapechar(CSVWriter.DEFAULT_ESCAPE_CHARACTER)
+                    .withLineEnd(CSVWriter.DEFAULT_LINE_END)
+                    .withOrderedResults(false)
                     .build();
-            beanToCsv.write(products);
+            statefulBeanToCsv.write(products);
             writer.close();
         }catch (Exception ex) {
-            ex.printStackTrace();
+            System.out.println("Error during write on file ");
         }
     }
 
