@@ -9,13 +9,17 @@ import com.distichain.test.response.UpdateProductResponse;
 import com.distichain.test.service.CreateProductService;
 import com.distichain.test.service.GetProductService;
 import com.distichain.test.service.UpdateProductService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 public class ProductManagerImpl implements ProductManager {
 
     private CreateProductService createProductService;
     private UpdateProductService updateProductService;
     private GetProductService getProductService;
 
+    @Autowired
     public ProductManagerImpl(CreateProductService createProductService,
                               UpdateProductService updateProductService,
                               GetProductService getProductService) {

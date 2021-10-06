@@ -6,26 +6,36 @@ import com.distichain.test.exception.ProductException;
 import com.distichain.test.repository.ProductRepository;
 import com.distichain.test.request.UpdateProductRequest;
 import com.distichain.test.response.UpdateProductResponse;
+import com.distichain.test.service.CachingService;
 import com.distichain.test.service.UpdateProductService;
+import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
+
+import static java.util.Objects.isNull;
+
+@Service
 public class UpdateProductServiceImpl implements UpdateProductService {
 
     private ProductRepository productRepository;
+    private CachingService cachingService;
 
-    public UpdateProductServiceImpl(ProductRepository productRepository) {
+    public UpdateProductServiceImpl(ProductRepository productRepository, CachingService cachingService) {
         this.productRepository = productRepository;
+        this.cachingService = cachingService;
     }
 
     @Override
     public UpdateProductResponse update(String sku, UpdateProductRequest request) {
-        validateProduct(sku);
-        ProductBo productBo = productRepository.update(ProductBo.builder()
+        ProductBo productBo = ProductBo.builder()
                 .sku(sku)
                 .title(request.getTitle())
                 .description(request.getDescription())
                 .price(request.getPrice())
                 .quantity(request.getQuantity())
-                .build());
+                .build();
+        updateCaching(productBo);
+        updateFile(productBo);
         return UpdateProductResponse.builder()
                 .sku(productBo.getSku())
                 .title(productBo.getTitle())
@@ -35,9 +45,13 @@ public class UpdateProductServiceImpl implements UpdateProductService {
                 .build();
     }
 
-    private void validateProduct(String sku) {
-        Boolean isExist = productRepository.existsBySku(sku);
-        if (!isExist)
-            throw new ProductException(ResponseCode.SKU_NOT_EXIST, String.format("Sku not exist %s1", sku));
+    private void updateFile(ProductBo productBo) {
+        productRepository.update(productBo);
+    }
+
+    private void updateCaching(ProductBo productBo) {
+        ProductBo product = cachingService.find(productBo.getSku());
+        if (!isNull(product))
+            cachingService.save(Arrays.asList(product));
     }
 }

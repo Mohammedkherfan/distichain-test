@@ -25,5 +25,9 @@
             <groupId>com.distichain.test</groupId>
             <artifactId>test-repository</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.distichain.test</groupId>
+            <artifactId>test-cache</artifactId>
+        </dependency>
     </dependencies>
 </project>

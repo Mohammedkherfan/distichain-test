@@ -16,6 +16,7 @@
         <module>test-repository</module>
         <module>test-repository-impl</module>
         <module>test-api</module>
+        <module>test-cache</module>
     </modules>
 
     <properties>
@@ -26,7 +27,7 @@
         <lombok.version>1.18.8</lombok.version>
         <jackson.databind.version>2.11.2</jackson.databind.version>
         <junit.version>4.12</junit.version>
-        <opencsv.version>4.1</opencsv.version>
+        <opencsv.version>4.3</opencsv.version>
     </properties>
 
     <dependencyManagement>
@@ -58,6 +59,11 @@
                 <artifactId>junit</artifactId>
                 <version>${junit.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.opencsv</groupId>
+                <artifactId>opencsv</artifactId>
+                <version>${opencsv.version}</version>
+            </dependency>
 
             <dependency>
                 <groupId>com.distichain.test</groupId>
@@ -82,6 +88,11 @@
             <dependency>
                 <groupId>com.distichain.test</groupId>
                 <artifactId>test-repository-impl</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.distichain.test</groupId>
+                <artifactId>test-cache</artifactId>
                 <version>${project.version}</version>
             </dependency>
         </dependencies>

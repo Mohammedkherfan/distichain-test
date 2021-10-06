@@ -9,21 +9,17 @@
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>test-bo</artifactId>
+    <artifactId>test-cache</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>
         <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-        </dependency>
-        <dependency>
             <groupId>com.distichain.test</groupId>
-            <artifactId>test-common</artifactId>
+            <artifactId>test-bo</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.opencsv</groupId>
-            <artifactId>opencsv</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
         </dependency>
     </dependencies>
 </project>

@@ -1,6 +1,7 @@
 package com.distichain.test.response;
 
 import com.distichain.test.dto.ProductDto;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,6 +15,8 @@ import java.util.List;
 @NoArgsConstructor
 public class CreateProductResponse {
 
+    @JsonProperty(value = "successAdded")
     private List<ProductDto> validProducts;
+    @JsonProperty(value = "failedAdded")
     private List<ProductDto> invalidProducts;
 }

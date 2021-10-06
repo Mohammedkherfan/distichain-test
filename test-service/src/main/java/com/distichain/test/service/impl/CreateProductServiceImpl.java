@@ -2,21 +2,31 @@ package com.distichain.test.service.impl;
 
 import com.distichain.test.bo.ProductBo;
 import com.distichain.test.dto.ProductDto;
+import com.distichain.test.enums.CachingKey;
+import com.distichain.test.repository.CachingRepository;
 import com.distichain.test.repository.ProductRepository;
 import com.distichain.test.request.CreateProductRequest;
 import com.distichain.test.response.CreateProductResponse;
+import com.distichain.test.service.CachingService;
 import com.distichain.test.service.CreateProductService;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static java.util.Objects.isNull;
+
+@Service
 public class CreateProductServiceImpl implements CreateProductService {
 
     private ProductRepository productRepository;
+    private CachingService cachingService;
 
-    public CreateProductServiceImpl(ProductRepository productRepository) {
+    public CreateProductServiceImpl(ProductRepository productRepository,
+                                    CachingService cachingService) {
         this.productRepository = productRepository;
+        this.cachingService = cachingService;
     }
 
     @Override
@@ -30,15 +40,19 @@ public class CreateProductServiceImpl implements CreateProductService {
         List<ProductBo> invalidProducts = new ArrayList<>();
 
         products.forEach(productBo -> {
-            Boolean isExist = Boolean.FALSE;//productRepository.existsBySku(productBo.getSku());
-            if (isExist) {
+            ProductBo product = cachingService.find(productBo.getSku());
+            if (!isNull(product)) {
                 invalidProducts.add(productBo);
             }else {
                 validProducts.add(productBo);
             }
         });
 
-        productRepository.save(validProducts);
+       if (!validProducts.isEmpty()) {
+           cachingService.save(validProducts);
+           productRepository.save(validProducts);
+       }
+
         return CreateProductResponse.builder()
                 .invalidProducts(invalidProducts.stream().map(productBo -> mapToDto(productBo)).collect(Collectors.toList()))
                 .validProducts(validProducts.stream().map(productBo -> mapToDto(productBo)).collect(Collectors.toList()))
