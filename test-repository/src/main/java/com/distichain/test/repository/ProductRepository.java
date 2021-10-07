@@ -7,11 +7,11 @@ import java.util.Optional;
 
 public interface ProductRepository {
 
-    Boolean existsBySku(String sku);
-
     void save(List<ProductBo> productBo);
 
     Optional<ProductBo> findBySku(String sku);
+
+    List<ProductBo> findAll();
 
     ProductBo update(ProductBo productBo);
 }

@@ -3,7 +3,6 @@ package com.distichain.test.service.impl;
 import com.distichain.test.bo.ProductBo;
 import com.distichain.test.common.ResponseCode;
 import com.distichain.test.exception.ProductException;
-import com.distichain.test.repository.CachingRepository;
 import com.distichain.test.repository.ProductRepository;
 import com.distichain.test.response.GetProductResponse;
 import com.distichain.test.service.CachingService;
@@ -48,6 +47,6 @@ public class GetProductServiceImpl implements GetProductService {
                     .quantity(product.get().getQuantity())
                     .build();
         }
-        throw new ProductException(ResponseCode.SKU_NOT_EXIST, String.format("Sku not exist %s1", sku));
+        throw new ProductException(ResponseCode.SKU_NOT_EXIST, String.format("Sku not exist %s", sku));
     }
 }

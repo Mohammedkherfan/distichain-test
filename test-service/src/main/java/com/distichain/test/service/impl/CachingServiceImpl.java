@@ -3,6 +3,7 @@ package com.distichain.test.service.impl;
 import com.distichain.test.bo.ProductBo;
 import com.distichain.test.repository.CachingRepository;
 import com.distichain.test.service.CachingService;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,7 +22,7 @@ public class CachingServiceImpl implements CachingService {
         return cachingRepository.find(code);
     }
 
-    //@Async
+    @Async
     @Override
     public void save(List<ProductBo> products) {
         products.forEach(productBo -> {

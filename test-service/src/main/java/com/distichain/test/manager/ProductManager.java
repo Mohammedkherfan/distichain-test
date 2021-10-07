@@ -13,4 +13,6 @@ public interface ProductManager {
     UpdateProductResponse update(String sku, UpdateProductRequest request);
 
     GetProductResponse get(String sku);
+
+    void refreshCache();
 }

@@ -11,6 +11,7 @@ import com.distichain.test.service.UpdateProductService;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
+import java.util.Optional;
 
 import static java.util.Objects.isNull;
 
@@ -46,12 +47,16 @@ public class UpdateProductServiceImpl implements UpdateProductService {
     }
 
     private void updateFile(ProductBo productBo) {
-        productRepository.update(productBo);
+        Optional<ProductBo> product = productRepository.findBySku(productBo.getSku());
+        if (!isNull(product))
+            productRepository.update(productBo);
+        else
+            throw new ProductException(ResponseCode.SKU_NOT_EXIST, String.format("Sku not exist %s", productBo.getSku()));
     }
 
     private void updateCaching(ProductBo productBo) {
         ProductBo product = cachingService.find(productBo.getSku());
         if (!isNull(product))
-            cachingService.save(Arrays.asList(product));
+            cachingService.save(Arrays.asList(productBo));
     }
 }

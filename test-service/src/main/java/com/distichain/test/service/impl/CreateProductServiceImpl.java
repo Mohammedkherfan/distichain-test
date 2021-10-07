@@ -2,8 +2,6 @@ package com.distichain.test.service.impl;
 
 import com.distichain.test.bo.ProductBo;
 import com.distichain.test.dto.ProductDto;
-import com.distichain.test.enums.CachingKey;
-import com.distichain.test.repository.CachingRepository;
 import com.distichain.test.repository.ProductRepository;
 import com.distichain.test.request.CreateProductRequest;
 import com.distichain.test.response.CreateProductResponse;
