@@ -48,7 +48,7 @@ public class UpdateProductServiceImpl implements UpdateProductService {
 
     private void updateFile(ProductBo productBo) {
         Optional<ProductBo> product = productRepository.findBySku(productBo.getSku());
-        if (!isNull(product))
+        if (product.isPresent())
             productRepository.update(productBo);
         else
             throw new ProductException(ResponseCode.SKU_NOT_EXIST, String.format("Sku not exist %s", productBo.getSku()));
